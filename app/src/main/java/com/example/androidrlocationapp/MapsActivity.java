@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private static final int FINE_LOCATION_REQUEST_CODE = 1000;
     private FusedLocationProviderClient locationClient;
+    //private LocationRequest mLocationRequest;
     private ActivityMapsBinding binding;
 
     @Override
@@ -91,6 +95,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             giveMePermissionToAccessLocation();
         }else {
 
+            mMap.setMyLocationEnabled(true);
+
+           /* mMap.clear();
+
+            if (mLocationRequest == null){
+
+                mLocationRequest = LocationRequest.create();
+                if (mLocationRequest != null){
+
+                    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                    mLocationRequest.setInterval(5000);
+                    mLocationRequest.setFastestInterval(1000);
+
+                    LocationCallback locationCallback = new LocationCallback() {
+                        @Override
+                        public void onLocationResult(@NonNull LocationResult locationResult) {
+
+                            showMeTheUserCurrentLocation();
+                        }
+                    };
+
+                    locationClient.requestLocationUpdates(mLocationRequest,locationCallback,null);
+
+                }
+            }*/
+
             locationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
@@ -99,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (location != null){
 
                         LatLng latLng  = new LatLng(location.getLatitude(),location.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng).title("Major Location"));
+                       // mMap.addMarker(new MarkerOptions().position(latLng).title("Your Current Location"));
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,16.0f);
                         mMap.moveCamera(cameraUpdate);
                     }else {
